@@ -18,8 +18,7 @@ public class LivingEntity : MonoBehaviour, IDamageable
     public virtual void OnDamage(float damage, Vector3 hitPoint, Vector3 hitNormal)
     {
         Health -= damage;
-        Debug.Log($"{damage} / {Health}");
-        if (Health <= 0)
+        if (Health < 0)
         {
             Health = 0;
             Die();

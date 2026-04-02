@@ -17,7 +17,11 @@ public class ZombieSpawner : MonoBehaviour
     public float HellephantSpwanInterval = 15f;
     public float lastHellephantSpawnTime;
 
-
+    private void Start()
+    {
+        lastZombieSpawnTime = Time.time;
+        lastHellephantSpawnTime = Time.time;
+    }
     private void Update()
     {
         if(Time.time > zombieSpawnInterval + lastZombieSpawnTime)

@@ -4,11 +4,12 @@ using UnityEngine.UI;
 public class PlayerHealth : LivingEntity
 {
     private PlayerController playerController;
+    public GameManager gameManager;
     private PlayerShooter playerShooter;
     private Animator animator;
     public Slider healthSlider;
+    public UiManager uiManager;
 
-    
     private void Awake()
     {
         playerController = GetComponent<PlayerController>();
@@ -31,6 +32,7 @@ public class PlayerHealth : LivingEntity
         {
             base.OnDamage(damage, hitPoint, hitNormal);
             UpdateHealth();
+            StartCoroutine(uiManager.FlashDamage()); 
         }
     }
 
@@ -40,13 +42,15 @@ public class PlayerHealth : LivingEntity
         animator.SetTrigger("Die");
         playerController.enabled = false;
         playerShooter.enabled = false;
-
+        gameManager.EndGame();
     }
 
     public void UpdateHealth()
     {
-        healthSlider.maxValue = startingHealth;
 
+        healthSlider.maxValue = startingHealth;
         healthSlider.value = Health;
+        Debug.Log(Health);
+
     }
 }

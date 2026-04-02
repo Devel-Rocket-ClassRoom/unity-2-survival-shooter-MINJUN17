@@ -108,7 +108,6 @@ public class Zombie : LivingEntity
                 break;
             case Status.Die:
                 UpdateDie();
-                StartSinking();
                 break;
         }
     }
@@ -120,7 +119,7 @@ public class Zombie : LivingEntity
 
     private void UpdateAttack()
     {
-        if(target == null || Vector3.Distance(target.position, transform.position) > attackDistance)
+        if (target == null || Vector3.Distance(target.position, transform.position) > attackDistance)
         {
             CurrentStatus = Status.Trace;
         }
@@ -129,12 +128,12 @@ public class Zombie : LivingEntity
         lookAt.y = transform.position.y;
         transform.LookAt(lookAt);
 
-        if(Time.time > attackInterval + lastAttackTime)
+        if (Time.time > attackInterval + lastAttackTime)
         {
             lastAttackTime = Time.time;
-            
+
             var livingEntity = target.GetComponent<LivingEntity>();
-            if(livingEntity != null)
+            if (livingEntity != null)
             {
                 livingEntity.OnDamage(damage, transform.position, -transform.forward);
             }
@@ -197,8 +196,9 @@ public class Zombie : LivingEntity
             return;
         }
         base.Die();
-        
         CurrentStatus = Status.Die;
+        StartSinking();
+
     }
 
     private void StartSinking()
@@ -208,6 +208,7 @@ public class Zombie : LivingEntity
 
     private IEnumerator CoSinkAndDestroy()
     {
+        agent.enabled = false;
         Vector3 targetPos = transform.position - new Vector3(0, 2f, 0);
 
         while (transform.position != targetPos)

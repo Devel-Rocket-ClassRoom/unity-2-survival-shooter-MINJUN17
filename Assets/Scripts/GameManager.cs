@@ -26,6 +26,7 @@ public class GameManager : MonoBehaviour
         isGameOver = true;
         zombieSpawner.enabled = false;
         uimanager.SetActiveGameOver(true);
+        StartCoroutine(uimanager.GameOverSequence());
 
     }
 }
