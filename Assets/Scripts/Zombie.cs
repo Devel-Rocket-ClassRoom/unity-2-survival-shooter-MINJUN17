@@ -35,6 +35,10 @@ public class Zombie : LivingEntity
     private float lastAttackTime;
     private float attackInterval = 1f;
 
+    public AudioClip hurtClip;
+    public AudioClip deathClip;
+    private AudioSource audioSource;
+
     public Status CurrentStatus
     {
         get { return currentStatus; }
@@ -73,6 +77,7 @@ public class Zombie : LivingEntity
         agent = GetComponent<NavMeshAgent>();
         zombieAnimator = GetComponent<Animator>();
         zombieCollider = GetComponent<Collider>();
+        audioSource = GetComponent<AudioSource>();
     }
 
     protected override void OnEnable()
@@ -182,6 +187,7 @@ public class Zombie : LivingEntity
     {
         if (!IsDead)
         {
+            audioSource.PlayOneShot(hurtClip);
             hitEffect.transform.position = hitPoint;
             hitEffect.transform.forward = hitNormal;
             hitEffect.Play();
@@ -196,6 +202,7 @@ public class Zombie : LivingEntity
             return;
         }
         base.Die();
+        audioSource.PlayOneShot(deathClip);
         CurrentStatus = Status.Die;
         StartSinking();
 

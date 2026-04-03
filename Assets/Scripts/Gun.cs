@@ -15,6 +15,9 @@ public class Gun : MonoBehaviour
     private Coroutine coShot;
     private float gunDamage = 20f;
 
+    public AudioClip gunShotClip;
+    private AudioSource audioSource;
+
     public bool Fire { get; private set; }
 
     private void Awake()
@@ -22,6 +25,7 @@ public class Gun : MonoBehaviour
         bulletLineRenderer = GetComponent<LineRenderer>();
         bulletLineRenderer.positionCount = 2;
         bulletLineRenderer.enabled = false;
+        audioSource = GetComponent<AudioSource>();
     }
 
 
@@ -33,7 +37,7 @@ public class Gun : MonoBehaviour
     {
         if (Time.time > lastFireTime + fireInterval)
         {
-
+            audioSource.PlayOneShot(gunShotClip);
             lastFireTime = Time.time;
             Vector3 hitPosition = Vector3.zero;
             Ray ray = new Ray(fireTransform.position, fireTransform.forward);

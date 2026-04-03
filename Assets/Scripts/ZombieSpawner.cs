@@ -3,7 +3,6 @@ using UnityEngine;
 
 public class ZombieSpawner : MonoBehaviour
 {
-    public Zombie prefab;
 
     public Zombie[] prefabs;
     public Transform[] spawnPoints;

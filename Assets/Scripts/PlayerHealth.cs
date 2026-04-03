@@ -10,12 +10,16 @@ public class PlayerHealth : LivingEntity
     public Slider healthSlider;
     public UiManager uiManager;
 
+    public AudioClip hurtClip;
+    public AudioClip deathClip;
+    private AudioSource audioSource;
+
     private void Awake()
     {
         playerController = GetComponent<PlayerController>();
         playerShooter = GetComponent<PlayerShooter>();
         animator = GetComponent<Animator>();
-        
+        audioSource = GetComponent<AudioSource>();
     }
 
     protected override void OnEnable()
@@ -30,6 +34,7 @@ public class PlayerHealth : LivingEntity
     {
         if (!IsDead)
         {
+            audioSource.PlayOneShot(hurtClip);
             base.OnDamage(damage, hitPoint, hitNormal);
             UpdateHealth();
             StartCoroutine(uiManager.FlashDamage()); 
@@ -39,10 +44,10 @@ public class PlayerHealth : LivingEntity
     public override void Die()
     {
         base.Die();
+        audioSource.PlayOneShot(deathClip);
         animator.SetTrigger("Die");
         playerController.enabled = false;
         playerShooter.enabled = false;
-        gameManager.EndGame();
     }
 
     public void UpdateHealth()
@@ -51,6 +56,5 @@ public class PlayerHealth : LivingEntity
         healthSlider.maxValue = startingHealth;
         healthSlider.value = Health;
         Debug.Log(Health);
-
     }
 }
